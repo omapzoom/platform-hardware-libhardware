@@ -42,6 +42,8 @@
  */
 
 #define HAL_DEFAULT_VARIANT     "default"
+#define HAL_ZOOM2_VARIANT        "zoom2"
+
 static const char *variant_keys[] = {
     "ro.hardware",  /* This goes first so that it can pick up a different
                        file on the emulator. */
@@ -147,7 +149,14 @@ int hw_get_module(const char *id, const struct hw_module_t **module)
 
     /* Try default */
     if (status != 0) {
-        status = load(id, HAL_DEFAULT_VARIANT, &hmi);
+        if ((strcmp(id, "overlay")) == 0)
+        {
+            status = load(id, HAL_ZOOM2_VARIANT, &hmi);                
+        }
+        else
+        {
+            status = load(id, HAL_DEFAULT_VARIANT, &hmi);
+        }
     }
     
     *module = hmi;
