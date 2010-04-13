@@ -58,9 +58,9 @@ enum {
 /* values for copybit_set_parameter(OVERLAY_TRANSFORM) */
 enum {
     /* flip source image horizontally */
-    OVERLAY_TRANSFORM_FLIP_H    = HAL_TRANSFORM_FLIP_V,
+    OVERLAY_TRANSFORM_FLIP_H    = HAL_TRANSFORM_FLIP_H,
     /* flip source image vertically */
-    OVERLAY_TRANSFORM_FLIP_V    = HAL_TRANSFORM_FLIP_H,
+    OVERLAY_TRANSFORM_FLIP_V    = HAL_TRANSFORM_FLIP_V,
     /* rotate source image 90 degrees */
     OVERLAY_TRANSFORM_ROT_90    = HAL_TRANSFORM_ROT_90,
     /* rotate source image 180 degrees */
@@ -72,11 +72,39 @@ enum {
 /* names for setParameter() */
 enum {
     /* rotation of the source image in degrees (0 to 359) */
-    OVERLAY_ROTATION_DEG  = 1,
+    OVERLAY_ROTATION_DEG  		= 1,
+    /* plane alpha value */
+    OVERLAY_PLANE_ALPHA     	= 2,
     /* enable or disable dithering */
-    OVERLAY_DITHER        = 3,
+    OVERLAY_DITHER        		= 3,
     /* transformation applied (this is a superset of COPYBIT_ROTATION_DEG) */
-    OVERLAY_TRANSFORM    = 4,
+    OVERLAY_TRANSFORM    		= 4,
+    /* z-order for the plane */
+    OVERLAY_PLANE_Z_ORDER 		= 5,
+    /* color key control support */
+    OVERLAY_COLOR_KEY 			= 6,
+    /* set the number of Overlay Buffers */
+    OVERLAY_NUM_BUFFERS			= 7,
+    /* set the Display panel Width */
+    OVERLAY_SET_DISPLAY_WIDTH 	= 8,
+    /* set the Display panel Height */
+    OVERLAY_SET_DISPLAY_HEIGHT 	= 9,
+    /* screen selection*/
+    OVERLAY_SET_SCREEN_ID = 10,
+};
+
+/* values for the possible screen IDs */
+enum {
+    /* primary display panel */
+    OVERLAY_ON_PRIMARY 			= 0,
+    /* secondary display panel */
+    OVERLAY_ON_SECONDARY		= 1,
+    /* external display: HDTV */
+    OVERLAY_ON_TV 				= 2,
+    /* PICO DLP */
+    OVERLAY_ON_PICODLP			= 3,
+    /* virtual display sink */
+    OVERLAY_ON_VIRTUAL_SINK		= 4
 };
 
 /* enable/disable value setParameter() */
