@@ -250,6 +250,9 @@ typedef struct {
 
         /* light in SI lux units */
         float           light;
+
+        /* light in SI Pascal units */
+        float           pressure;
     };
 
     /* time is in nanosecond */
