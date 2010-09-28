@@ -95,6 +95,16 @@ enum {
     OVERLAY_SET_DISPLAY_HEIGHT 	= 9,
     /* screen selection*/
     OVERLAY_SET_SCREEN_ID = 10,
+#ifdef OMAP_ENHANCEMENT
+    /* Stereo 3D display mode */
+    OVERLAY_SET_S3D_MODE = 11,
+    /* Frame format */
+    OVERLAY_SET_S3D_FORMAT = 12,
+    /* Frame order */
+    OVERLAY_SET_S3D_ORDER = 13,
+    /* Frame subsampling s*/
+    OVERLAY_SET_S3D_SUBSAMPLING =14,
+#endif
 };
 
 /* values for the possible screen IDs */
@@ -111,10 +121,44 @@ enum {
     OVERLAY_ON_VIRTUAL_SINK		= 4
 };
 
+#ifdef OMAP_ENHANCEMENT
+/*values for possible S3D modes*/
+enum {
+    OVERLAY_S3D_MODE_OFF = 0,
+    OVERLAY_S3D_MODE_ON = 1,
+    OVERLAY_S3D_MODE_ANAGLYPH = 2,
+};
+
+/*values for possible S3D format types*/
+enum {
+    OVERLAY_S3D_FORMAT_NONE = 0,
+    OVERLAY_S3D_FORMAT_OVERUNDER,
+    OVERLAY_S3D_FORMAT_SIDEBYSIDE,
+    OVERLAY_S3D_FORMAT_ROW_IL,
+    OVERLAY_S3D_FORMAT_COL_IL,
+    OVERLAY_S3D_FORMAT_PIX_IL,
+    OVERLAY_S3D_FORMAT_CHECKB,
+    OVERLAY_S3D_FORMAT_FRM_SEQ,
+};
+
+/*values for possible S3D order types*/
+enum {
+    OVERLAY_S3D_ORDER_LF = 0,
+    OVERLAY_S3D_ORDER_RF,
+};
+
+/*values for possible S3D subsampling modes*/
+enum {
+    OVERLAY_S3D_SS_NONE = 0,
+    OVERLAY_S3D_SS_HOR,
+    OVERLAY_S3D_SS_VERT,
+};
+#endif
+
 /* enable/disable value setParameter() */
 enum {
     OVERLAY_DISABLE = 0,
-    OVERLAY_ENABLE  = 1
+    OVERLAY_ENABLE  = 1,
 };
 
 /* names for get() */
@@ -186,7 +230,13 @@ struct overlay_control_device_t {
      * size and format is returned in overlay_t. */
     overlay_t* (*createOverlay)(struct overlay_control_device_t *dev,
             uint32_t w, uint32_t h, int32_t format);
-    
+
+#ifdef OMAP_ENHANCEMENT
+     /* Overloaded function for S3D Overlay creation.  Used to load V4L2_S3D driver*/
+    overlay_t* (*createOverlay_S3D)(struct overlay_control_device_t *dev,
+            uint32_t w, uint32_t h, int32_t format, int isS3D);
+#endif
+
     /* destroys an overlay. This call releases all
      * resources associated with overlay_t and make it invalid */
     void (*destroyOverlay)(struct overlay_control_device_t *dev,
@@ -247,6 +297,12 @@ struct overlay_data_device_t {
             overlay_buffer_t buffer);
 
     int (*getBufferCount)(struct overlay_data_device_t *dev);
+
+#ifdef OMAP_ENHANCEMENT
+    /* For setting Stereo Parameters on-the-fly */
+   int (*set_s3d_params)(struct overlay_data_device_t *dev, uint32_t s3d_mode,
+                           uint32_t s3d_fmt, uint32_t s3d_order, uint32_t s3d_subsampling);
+#endif
 };
 
 
