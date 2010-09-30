@@ -142,6 +142,10 @@ enum {
     HAL_PIXEL_FORMAT_YCbCr_420_SP       = 0x21,
     HAL_PIXEL_FORMAT_YCrCb_420_SP_TILED = 0x22,
     HAL_PIXEL_FORMAT_YCrCb_422_SP       = 0x23,
+#ifdef OMAP_ENHANCEMENT
+    //NV12 Interlaced (Sequential Top-Bottom)
+    HAL_PIXEL_FORMAT_YCbCr_420_SP_SEQ_TB = 0x24,
+#endif
 };
 
 
