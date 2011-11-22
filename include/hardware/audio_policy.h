@@ -341,6 +341,9 @@ struct audio_policy_service_ops {
                         int session,
                         audio_io_handle_t src_output,
                         audio_io_handle_t dst_output);
+#ifdef OMAP_ENHANCEMENT
+    int (*set_FMRxActive)(void *service, bool state);
+#endif
 };
 
 /**********************************************************************/
