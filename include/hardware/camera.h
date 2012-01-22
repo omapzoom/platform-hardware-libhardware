@@ -297,6 +297,12 @@ typedef struct camera_device_extended_ops {
     int (*set_buffer_source)(struct camera_device *,
             struct preview_stream_ops *tapin,
             struct preview_stream_ops *tapout);
+
+    /**
+     * Take a picture with parameters.
+     */
+    int (*take_picture_with_parameters)(struct camera_device *,
+            const char *parameters);
 #endif
 } camera_device_extended_ops_t;
 
