@@ -262,8 +262,11 @@ typedef struct camera_device_ops {
     /**
      * Take a picture.
      */
+#ifdef OMAP_ENHANCEMENT
+    int (*take_picture)(struct camera_device *, const char *params);
+#else
     int (*take_picture)(struct camera_device *);
-
+#endif
     /**
      * Cancel a picture that was started with takePicture. Calling this method
      * when no picture is being taken is a no-op.
