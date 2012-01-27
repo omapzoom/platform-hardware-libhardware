@@ -277,6 +277,14 @@ typedef struct camera_device_ops {
      * Dump state of the camera hardware
      */
     int (*dump)(struct camera_device *, int fd);
+
+#ifdef OMAP_ENHANCEMENT_CPCAM
+    /** Set the buffer sources for a pipeline that can have
+     * either a tapin and/or tapout point */
+    int (*set_buffer_source)(struct camera_device *,
+            struct preview_stream_ops *tapin,
+            struct preview_stream_ops *tapout);
+#endif
 } camera_device_ops_t;
 
 typedef struct camera_device {
