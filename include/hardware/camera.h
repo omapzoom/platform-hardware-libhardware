@@ -109,6 +109,15 @@ typedef struct preview_stream_ops {
                 int *count);
     int (*lock_buffer)(struct preview_stream_ops* w,
                 buffer_handle_t* buffer);
+
+#ifdef OMAP_ENHANCEMENT
+    /** tap in functions */
+    int (*update_and_get_buffer)(struct preview_stream_ops* w,
+                          buffer_handle_t** buffer, int *stride);
+    int (*get_metadata)(struct preview_stream_ops *w, const char *data);
+    int (*get_buffer_dimension)(struct preview_stream_ops *w, int *width, int *height);
+    int (*get_buffer_format)(struct preview_stream_ops *w, int *format);
+#endif
 } preview_stream_ops_t;
 
 struct camera_device;
@@ -303,6 +312,12 @@ typedef struct camera_device_ops {
     int (*set_buffer_source)(struct camera_device *,
             struct preview_stream_ops *tapin,
             struct preview_stream_ops *tapout);
+
+    /** start a reprocessing operation */
+    int (*reprocess)(struct camera_device *, const char *params);
+
+    /** cancels current reprocessing operation */
+    int (*cancel_reprocess)(struct camera_device *);
 #endif
 } camera_device_ops_t;
 
