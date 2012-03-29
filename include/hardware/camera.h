@@ -99,6 +99,13 @@ typedef struct preview_stream_extended_ops {
             buffer_handle_t** buffer, int *stride);
     int (*get_buffer_dimension)(struct preview_stream_ops *w, int *width, int *height);
     int (*get_buffer_format)(struct preview_stream_ops *w, int *format);
+
+    /**
+     * The data is a shared memory created with camera_request_memory().
+     * The contents is a populated instance of camera_metadata_t applicable
+     * for next queued frame.
+     */
+    int (*set_metadata)(struct preview_stream_ops *w, const camera_memory_t *data);
 } preview_stream_extended_ops_t;
 #endif
 
