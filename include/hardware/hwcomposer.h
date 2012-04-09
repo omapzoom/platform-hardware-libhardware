@@ -202,13 +202,6 @@ typedef struct hwc_layer {
     /* The layout of the data within the buffer */
     uint32_t buf_layout;
 #endif
-
-#ifdef OMAP_ENHANCEMENT_S3D
-    uint32_t type;
-    uint32_t viewOrder;
-    uint32_t renderMode;
-#endif
-
 } hwc_layer_t;
 
 
