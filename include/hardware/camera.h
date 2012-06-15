@@ -110,6 +110,8 @@ typedef struct preview_stream_extended_ops {
      * for next queued frame.
      */
     int (*set_metadata)(struct preview_stream_ops *w, const camera_memory_t *data);
+
+    int (*get_id)(struct preview_stream_ops *w, const char **data);
 #endif
 
 } preview_stream_extended_ops_t;
