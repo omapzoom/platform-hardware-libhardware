@@ -263,7 +263,7 @@ typedef struct camera_device_ops {
     /**
      * Take a picture.
      */
-#ifdef OMAP_ENHANCEMENT
+#ifdef OMAP_ENHANCEMENT_CPCAM
     int (*take_picture)(struct camera_device *, const char *params);
 #else
     int (*take_picture)(struct camera_device *);
@@ -310,7 +310,7 @@ typedef struct camera_device_ops {
      */
     int (*dump)(struct camera_device *, int fd);
 
-#ifdef OMAP_ENHANCEMENT
+#ifdef OMAP_ENHANCEMENT_CPCAM
     /** Set the buffer sources for a pipeline that can have
      * either a tapin and/or tapout point */
     int (*set_buffer_source)(struct camera_device *,
