@@ -117,7 +117,7 @@ typedef struct preview_stream_ops {
     int (*get_metadata)(struct preview_stream_ops *w, const char *data);
     int (*get_buffer_dimension)(struct preview_stream_ops *w, int *width, int *height);
     int (*get_buffer_format)(struct preview_stream_ops *w, int *format);
-    int (*set_metadata)(struct preview_stream_ops *w, const char *data);
+    int (*set_metadata)(struct preview_stream_ops *w, camera_memory_t *data);
 #endif
 } preview_stream_ops_t;
 
