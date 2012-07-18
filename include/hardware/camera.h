@@ -92,6 +92,16 @@ typedef struct preview_stream_ops {
     int (*set_timestamp)(struct preview_stream_ops *w, int64_t timestamp);
 } preview_stream_ops_t;
 
+#ifdef OMAP_ENHANCEMENT_CPCAM
+typedef struct preview_stream_extended_ops {
+    /** tap in functions */
+    int (*update_and_get_buffer)(struct preview_stream_ops* w,
+            buffer_handle_t** buffer, int *stride);
+    int (*get_buffer_dimension)(struct preview_stream_ops *w, int *width, int *height);
+    int (*get_buffer_format)(struct preview_stream_ops *w, int *format);
+} preview_stream_extended_ops_t;
+#endif
+
 struct camera_device;
 typedef struct camera_device_ops {
     /** Set the ANativeWindow to which preview frames are sent */
@@ -303,6 +313,14 @@ typedef struct camera_device_extended_ops {
      */
     int (*take_picture_with_parameters)(struct camera_device *,
             const char *parameters);
+
+    int (*set_extended_preview_ops)(struct camera_device *, preview_stream_extended_ops_t *ops);
+
+    /** start a reprocessing operation */
+    int (*reprocess)(struct camera_device *, const char *params);
+
+    /** cancels current reprocessing operation */
+    int (*cancel_reprocess)(struct camera_device *);
 #endif
 } camera_device_extended_ops_t;
 
