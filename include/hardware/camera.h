@@ -113,6 +113,10 @@ typedef struct preview_stream_extended_ops {
 
     int (*get_id)(struct preview_stream_ops *w, char *data, unsigned int data_size);
     int (*get_buffer_count)(struct preview_stream_ops *w, int *count);
+    int (*get_crop) (struct preview_stream_ops *w,
+            int *left, int *top, int *right, int *bottom);
+    int (*get_current_size) (struct preview_stream_ops *w,
+            int *width, int *height);
 #endif
 
 } preview_stream_extended_ops_t;
