@@ -281,6 +281,17 @@ typedef struct camera_device_ops {
 
 #ifdef OMAP_ENHANCEMENT
 /**
+ * camera_device_extended_ops_t struct is intended to be used as extension to
+ * standard camera_device_ops_t. Adding new callbacks directly to
+ * camera_device_ops_t breaks binary compatibility with HAL. Instead, enhanced
+ * CameraService should call send_command(CAMERA_CMD_SETUP_EXTENDED_OPERATIONS)
+ * passing the pointer to camera_device_extended_ops instance that HAL should
+ * either populate or ignore.
+ */
+typedef struct camera_device_extended_ops {
+} camera_device_extended_ops_t;
+
+/**
  * Helpers to allow passing pointer to send_command callback by converting its
  * low and high parts into arg1 and arg2 ints.
  */
