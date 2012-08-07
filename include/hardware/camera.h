@@ -279,6 +279,23 @@ typedef struct camera_device_ops {
     int (*dump)(struct camera_device *, int fd);
 } camera_device_ops_t;
 
+#ifdef OMAP_ENHANCEMENT
+/**
+ * Helpers to allow passing pointer to send_command callback by converting its
+ * low and high parts into arg1 and arg2 ints.
+ */
+inline void* camera_cmd_send_command_args_to_pointer(int32_t arg1, int32_t arg2)
+{
+    return (void*)(((int64_t)arg2 << 32) | (int64_t)arg1);
+}
+
+inline void camera_cmd_send_command_pointer_to_args(const void* p, int32_t* arg1, int32_t* arg2)
+{
+    *arg1 = (int32_t)((int64_t)p & 0xffffffff);
+    *arg2 = (int32_t)((int64_t)p >> 32);
+}
+#endif
+
 typedef struct camera_device {
     /**
      * camera_device.common.version must be in the range
