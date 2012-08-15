@@ -92,8 +92,12 @@ typedef struct preview_stream_ops {
     int (*set_timestamp)(struct preview_stream_ops *w, int64_t timestamp);
 } preview_stream_ops_t;
 
-#ifdef OMAP_ENHANCEMENT_CPCAM
+#ifdef OMAP_ENHANCEMENT
+/** Use below structure to extend operations to ANativeWindow/SurfaceTexture from CameraHAL */
 typedef struct preview_stream_extended_ops {
+
+/** CPCAM specific extensions */
+#ifdef OMAP_ENHANCEMENT_CPCAM
     /** tap in functions */
     int (*update_and_get_buffer)(struct preview_stream_ops* w,
             buffer_handle_t** buffer, int *stride);
@@ -106,6 +110,8 @@ typedef struct preview_stream_extended_ops {
      * for next queued frame.
      */
     int (*set_metadata)(struct preview_stream_ops *w, const camera_memory_t *data);
+#endif
+
 } preview_stream_extended_ops_t;
 #endif
 
@@ -321,14 +327,16 @@ typedef struct camera_device_extended_ops {
     int (*take_picture_with_parameters)(struct camera_device *,
             const char *parameters);
 
-    int (*set_extended_preview_ops)(struct camera_device *, preview_stream_extended_ops_t *ops);
-
     /** start a reprocessing operation */
     int (*reprocess)(struct camera_device *, const char *params);
 
     /** cancels current reprocessing operation */
     int (*cancel_reprocess)(struct camera_device *);
 #endif
+
+    /** Set extended preview operations on window/surface texture */
+    int (*set_extended_preview_ops)(struct camera_device *, preview_stream_extended_ops_t *ops);
+
 } camera_device_extended_ops_t;
 
 /**
