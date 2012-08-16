@@ -330,6 +330,11 @@ typedef struct camera_device_extended_ops {
     int (*take_picture_with_parameters)(struct camera_device *,
             const char *parameters);
 
+    /** Release buffer sources previously set by  set_buffer_source */
+    int (*release_buffer_source)(struct camera_device *,
+            struct preview_stream_ops *tapin,
+            struct preview_stream_ops *tapout);
+
     /** start a reprocessing operation */
     int (*reprocess)(struct camera_device *, const char *params);
 
