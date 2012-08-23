@@ -426,6 +426,12 @@ enum effect_command_e {
    EFFECT_CMD_SET_FEATURE_CONFIG,   // set current feature configuration
    EFFECT_CMD_SET_AUDIO_SOURCE,     // set the audio source (see audio.h, audio_source_t)
    EFFECT_CMD_FIRST_PROPRIETARY = 0x10000 // first proprietary command code
+#if defined(DOLBY_AUDIOEFFECT_DS) && (DOLBY_AUDIOEFFECT_DS_PREGAIN)
+,   EFFECT_CMD_DOLBY_SET_PREGAIN    // set ds pregain
+#endif // DOLBY_AUDIOEFFECT_DS && DOLBY_AUDIOEFFECT_DS_PREGAIN
+#if defined(DOLBY_AUDIOEFFECT_DS) && (DOLBY_AUDIOEFFECT_DS_POSTGAIN)
+,   EFFECT_CMD_DOLBY_SET_POSTGAIN   // set ds postgain
+#endif // DOLBY_AUDIOEFFECT_DS && DOLBY_AUDIOEFFECT_DS_POSTGAIN
 };
 
 //==================================================================================================
