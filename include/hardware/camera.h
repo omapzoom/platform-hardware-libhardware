@@ -111,7 +111,7 @@ typedef struct preview_stream_extended_ops {
      */
     int (*set_metadata)(struct preview_stream_ops *w, const camera_memory_t *data);
 
-    int (*get_id)(struct preview_stream_ops *w, const char **data);
+    int (*get_id)(struct preview_stream_ops *w, char *data, unsigned int data_size);
     int (*get_buffer_count)(struct preview_stream_ops *w, int *count);
 #endif
 
