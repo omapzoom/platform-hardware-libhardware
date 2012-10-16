@@ -195,6 +195,44 @@ typedef struct hwc_layer_1 {
 
 } hwc_layer_1_t;
 
+#ifdef OMAP_ENHANCEMENT
+
+/*
+ * HWC extension operations, see HWC_EXTENDED_API
+ */
+enum {
+    /*
+     * Get extra layer data
+     * @params
+     * data: hwc_layer_extended_t
+     */
+    HWC_EXTENDED_OP_LAYERDATA = 1,
+};
+
+typedef struct hwc_layer_extended {
+    /*
+     * Layer index (input)
+     */
+    uint32_t idx;
+
+    /*
+     * Display index (input)
+     */
+    int32_t dpy;
+
+    /*
+     * Provides a unique identity for this layer (output)
+     */
+    uint32_t identity;
+} hwc_layer_extended_t;
+
+typedef struct hwc_layer_list_extended {
+    size_t numHwLayers;
+    hwc_layer_extended_t hwLayers[0];
+} hwc_layer_list_extended_t;
+
+#endif
+
 /* This represents a display, typically an EGLDisplay object */
 typedef void* hwc_display_t;
 
