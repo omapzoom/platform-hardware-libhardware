@@ -161,8 +161,6 @@ typedef struct hwc_layer {
         };
     };
 } hwc_layer_t;
-
-
 /*
  * hwc_layer_list_t::flags values
  */
@@ -172,6 +170,14 @@ enum {
      * passed to (*prepare)() has changed by more than just the buffer handles.
      */
     HWC_GEOMETRY_CHANGED = 0x00000001,
+#ifdef OMAP_ENHANCEMENT
+    /*
+     * HWC_EXTENDED_API is set by SurfaceFlinger to indicate that the h/w
+     * composer HAL api has been extended and that the HAL implementation
+     * can use functions in the extended ABI.
+     */
+    HWC_EXTENDED_API = 0x80000000,
+#endif
 };
 
 /*
@@ -228,6 +234,29 @@ typedef struct hwc_procs {
      *
      */
     void (*vsync)(struct hwc_procs* procs, int zero, int64_t timestamp);
+#ifdef OMAP_ENHANCEMENT
+    /*
+     * (*extension_cb)() is called by the h/w composer HAL. Its purpose is
+     * to extend the api from h/w composer to SurfaceFlinger.
+     *
+     * In order to handle mismatching build configuration between
+     * SurfaceFlinger and the h/w composer HAL. The HAL will only call
+     * this callback if HWC_EXTENDED_API is passed in hwc_layer_list_t
+     * flags.
+     *
+     * The "operation" parameter specifies the specific extension required
+     * the caller and callee should maintain the ABI between each other in
+     * the same way as kernel ioctl calls do.
+     *
+     * If the "size" parameter is -1 a return value of zero indicates the
+     * given operation is supported.
+     */
+    int (*extension_cb)(struct hwc_procs* procs,
+                        int operation,
+                        void** data,
+                        int size);
+
+#endif
 } hwc_procs_t;
 
 
