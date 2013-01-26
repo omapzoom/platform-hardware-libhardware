@@ -29,6 +29,9 @@
 __BEGIN_DECLS
 
 #define GRALLOC_HARDWARE_FB0 "fb0"
+#ifdef OMAP_ENHANCEMENT
+#define GRALLOC_HARDWARE_FB1 "fb1"
+#endif
 
 /*****************************************************************************/
 
@@ -151,10 +154,23 @@ typedef struct framebuffer_device_t {
 
 /** convenience API for opening and closing a supported device */
 
+#ifdef OMAP_ENHANCEMENT
+static inline int framebuffer_open(const struct hw_module_t* module,
+        struct framebuffer_device_t** device, const char* id) {
+    if (!strcmp(GRALLOC_HARDWARE_FB0, id))
+        return module->methods->open(module,
+                GRALLOC_HARDWARE_FB0, (struct hw_device_t**)device);
+    if (!strcmp(GRALLOC_HARDWARE_FB1, id))
+        return module->methods->open(module,
+                GRALLOC_HARDWARE_FB1, (struct hw_device_t**)device);
+
+    return -1;
+#else
 static inline int framebuffer_open(const struct hw_module_t* module,
         struct framebuffer_device_t** device) {
     return module->methods->open(module,
             GRALLOC_HARDWARE_FB0, (struct hw_device_t**)device);
+#endif
 }
 
 static inline int framebuffer_close(struct framebuffer_device_t* device) {
