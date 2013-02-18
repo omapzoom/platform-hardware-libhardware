@@ -337,7 +337,14 @@ static size_t in_get_buffer_size(const struct audio_stream *stream)
 
 static audio_channel_mask_t in_get_channels(const struct audio_stream *stream)
 {
+#ifdef OMAP_ENHANCEMENT
+    const struct submix_stream_in *in =
+            reinterpret_cast<const struct submix_stream_in *>(stream);
+    uint32_t channels = in->dev->config.channel_mask;
+    return channels;
+#else
     return AUDIO_CHANNEL_IN_STEREO;
+#endif
 }
 
 static audio_format_t in_get_format(const struct audio_stream *stream)
@@ -551,7 +558,18 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     out->stream.get_render_position = out_get_render_position;
     out->stream.get_next_write_timestamp = out_get_next_write_timestamp;
 
+#ifdef OMAP_ENHANCEMENT
+    switch (config->channel_mask) {
+    case AUDIO_CHANNEL_OUT_STEREO:
+    case AUDIO_CHANNEL_OUT_5POINT1:
+        break;
+    default:
+        config->channel_mask = AUDIO_CHANNEL_OUT_STEREO;
+        break;
+    }
+#else
     config->channel_mask = AUDIO_CHANNEL_OUT_STEREO;
+#endif
     rsxadev->config.channel_mask = config->channel_mask;
 
 #ifdef OMAP_ENHANCEMENT
@@ -575,8 +593,19 @@ static int adev_open_output_stream(struct audio_hw_device *dev,
     // initialize pipe
     {
         ALOGV("  initializing pipe");
+#ifdef OMAP_ENHANCEMENT
+        NBAIO_Format format = Format_Invalid;
+        if (config->channel_mask == AUDIO_CHANNEL_OUT_STEREO) {
+            format = config->sample_rate == 48000 ? Format_SR48_C2_I16 : Format_SR44_1_C2_I16;
+        } else if (config->channel_mask == AUDIO_CHANNEL_OUT_MONO) {
+            format = config->sample_rate == 48000 ? Format_SR48_C1_I16 : Format_SR44_1_C1_I16;
+        } else if (config->channel_mask == AUDIO_CHANNEL_OUT_5POINT1) {
+            format = config->sample_rate == 48000 ? Format_SR48_C6_I16 : Format_SR44_1_C6_I16;
+        }
+#else
         const NBAIO_Format format =
                 config->sample_rate == 48000 ? Format_SR48_C2_I16 : Format_SR44_1_C2_I16;
+#endif
         const NBAIO_Format offers[1] = {format};
         size_t numCounterOffers = 0;
         // creating a MonoPipe with optional blocking set to true.
@@ -675,8 +704,13 @@ static int adev_get_mic_mute(const struct audio_hw_device *dev, bool *state)
 static size_t adev_get_input_buffer_size(const struct audio_hw_device *dev,
                                          const struct audio_config *config)
 {
+#ifdef OMAP_ENHANCEMENT
+    struct submix_audio_device *rsxadev = (struct submix_audio_device *)dev;
+    return rsxadev->config.period_size * popcount(config->channel_mask) * sizeof(int16_t);
+#else
     //### TODO correlate this with pipe parameters
     return 4096;
+#endif
 }
 
 static int adev_open_input_stream(struct audio_hw_device *dev,
@@ -715,7 +749,20 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
     in->stream.read = in_read;
     in->stream.get_input_frames_lost = in_get_input_frames_lost;
 
+#ifdef OMAP_ENHANCEMENT
+    switch (config->channel_mask) {
+    case AUDIO_CHANNEL_IN_MONO:
+    case AUDIO_CHANNEL_IN_STEREO:
+    case AUDIO_CHANNEL_IN_5POINT1EMUL:
+        break;
+    default:
+        config->channel_mask = AUDIO_CHANNEL_IN_STEREO;
+        break;
+    }
+#else
     config->channel_mask = AUDIO_CHANNEL_IN_STEREO;
+#endif
+
     rsxadev->config.channel_mask = config->channel_mask;
 
 #ifdef OMAP_ENHANCEMENT
