@@ -120,6 +120,8 @@ __BEGIN_DECLS
 #ifdef OMAP_ENHANCEMENT
 #define AUDIO_PARAMETER_STREAM_FM_ROUTING "fm_routing"
 #define AUDIO_PARAMETER_STREAM_FM_MUTE "fm_mute"
+#define AUDIO_PARAMETER_STREAM_CAPTURE "capture"
+#define AUDIO_PARAMETER_STREAM_PLAYBACK "playback"
 #endif
 
 /**************************************/
