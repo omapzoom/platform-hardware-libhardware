@@ -128,12 +128,22 @@ struct audio_policy {
 
     /* request an output appropriate for playback of the supplied stream type and
      * parameters */
+#ifdef OMAP_MULTIZONE_AUDIO
+    audio_io_handle_t (*get_output)(struct audio_policy *pol,
+                                    audio_stream_type_t stream,
+                                    uint32_t samplingRate,
+                                    audio_format_t format,
+                                    audio_channel_mask_t channelMask,
+                                    audio_output_flags_t flags,
+                                    int session);
+#else
     audio_io_handle_t (*get_output)(struct audio_policy *pol,
                                     audio_stream_type_t stream,
                                     uint32_t samplingRate,
                                     audio_format_t format,
                                     audio_channel_mask_t channelMask,
                                     audio_output_flags_t flags);
+#endif
 
     /* indicates to the audio policy manager that the output starts being used
      * by corresponding stream. */
@@ -150,15 +160,29 @@ struct audio_policy {
                        int session);
 
     /* releases the output. */
+#ifdef OMAP_MULTIZONE_AUDIO
+    void (*release_output)(struct audio_policy *pol, audio_io_handle_t output,
+                           int session);
+#else
     void (*release_output)(struct audio_policy *pol, audio_io_handle_t output);
+#endif
 
     /* request an input appropriate for record from the supplied device with
      * supplied parameters. */
+#ifdef OMAP_MULTIZONE_AUDIO
+    audio_io_handle_t (*get_input)(struct audio_policy *pol, audio_source_t inputSource,
+                                   uint32_t samplingRate,
+                                   audio_format_t format,
+                                   audio_channel_mask_t channelMask,
+                                   audio_in_acoustics_t acoustics,
+                                   int session);
+#else
     audio_io_handle_t (*get_input)(struct audio_policy *pol, audio_source_t inputSource,
                                    uint32_t samplingRate,
                                    audio_format_t format,
                                    audio_channel_mask_t channelMask,
                                    audio_in_acoustics_t acoustics);
+#endif
 
     /* indicates to the audio policy manager that the input starts being used */
     int (*start_input)(struct audio_policy *pol, audio_io_handle_t input);
@@ -167,7 +191,12 @@ struct audio_policy {
     int (*stop_input)(struct audio_policy *pol, audio_io_handle_t input);
 
     /* releases the input. */
+#ifdef OMAP_MULTIZONE_AUDIO
+    void (*release_input)(struct audio_policy *pol, audio_io_handle_t input,
+                          int session);
+#else
     void (*release_input)(struct audio_policy *pol, audio_io_handle_t input);
+#endif
 
     /*
      * volume control functions
@@ -241,6 +270,37 @@ struct audio_policy {
 
     /* dump state */
     int (*dump)(const struct audio_policy *pol, int fd);
+
+#ifdef OMAP_MULTIZONE_AUDIO
+    audio_devices_t (*get_zone_supported_devices)(const struct audio_policy *pol,
+                                                  audio_zones_t zone);
+
+    audio_devices_t (*get_primary_devices)(const struct audio_policy *pol);
+
+    int (*set_zone_devices)(struct audio_policy *pol,
+                            audio_zones_t zone, audio_devices_t devices);
+
+    audio_devices_t (*get_zone_devices)(const struct audio_policy *pol,
+                                        audio_zones_t zone);
+
+    int (*set_session_zones)(struct audio_policy *pol,
+                             int session, audio_zones_t zones);
+
+    audio_zones_t (*get_session_zones)(const struct audio_policy *pol,
+                                       int session);
+
+    int (*set_zone_volume)(struct audio_policy *pol,
+                           audio_zones_t zone, float volume);
+
+    float (*get_zone_volume)(struct audio_policy *pol,
+                             audio_zones_t zone);
+
+    int (*set_session_volume)(struct audio_policy *pol,
+                              int session, audio_zones_t zones, float volume);
+
+    float (*get_session_volume)(struct audio_policy *pol,
+                                int session, audio_zones_t zone);
+#endif
 };
 
 /* audio hw module handle used by load_hw_module(), open_output_on_module()

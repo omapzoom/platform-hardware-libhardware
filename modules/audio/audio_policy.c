@@ -94,12 +94,22 @@ static int ap_init_check(const struct audio_policy *pol)
     return 0;
 }
 
+#ifdef OMAP_MULTIZONE_AUDIO
+static audio_io_handle_t ap_get_output(struct audio_policy *pol,
+                                       audio_stream_type_t stream,
+                                       uint32_t sampling_rate,
+                                       audio_format_t format,
+                                       audio_channel_mask_t channelMask,
+                                       audio_output_flags_t flags,
+                                       int session)
+#else
 static audio_io_handle_t ap_get_output(struct audio_policy *pol,
                                        audio_stream_type_t stream,
                                        uint32_t sampling_rate,
                                        audio_format_t format,
                                        audio_channel_mask_t channelMask,
                                        audio_output_flags_t flags)
+#endif
 {
     return 0;
 }
@@ -116,16 +126,31 @@ static int ap_stop_output(struct audio_policy *pol, audio_io_handle_t output,
     return -ENOSYS;
 }
 
+#ifdef OMAP_MULTIZONE_AUDIO
+static void ap_release_output(struct audio_policy *pol,
+                              audio_io_handle_t output,
+                              int session)
+#else
 static void ap_release_output(struct audio_policy *pol,
                               audio_io_handle_t output)
+#endif
 {
 }
 
+#ifdef OMAP_MULTIZONE_AUDIO
+static audio_io_handle_t ap_get_input(struct audio_policy *pol, audio_source_t inputSource,
+                                      uint32_t sampling_rate,
+                                      audio_format_t format,
+                                      audio_channel_mask_t channelMask,
+                                      audio_in_acoustics_t acoustics,
+                                      int session)
+#else
 static audio_io_handle_t ap_get_input(struct audio_policy *pol, audio_source_t inputSource,
                                       uint32_t sampling_rate,
                                       audio_format_t format,
                                       audio_channel_mask_t channelMask,
                                       audio_in_acoustics_t acoustics)
+#endif
 {
     return 0;
 }
@@ -140,7 +165,12 @@ static int ap_stop_input(struct audio_policy *pol, audio_io_handle_t input)
     return -ENOSYS;
 }
 
+#ifdef OMAP_MULTIZONE_AUDIO
+static void ap_release_input(struct audio_policy *pol, audio_io_handle_t input,
+                             int session)
+#else
 static void ap_release_input(struct audio_policy *pol, audio_io_handle_t input)
+#endif
 {
 }
 
