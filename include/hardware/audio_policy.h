@@ -340,6 +340,16 @@ struct audio_policy_service_ops {
                                                audio_io_handle_t output1,
                                                audio_io_handle_t output2);
 
+#ifdef OMAP_MULTIZONE_AUDIO
+    /* creates a special output that duplicates audio data to the outputs
+     * passed arguments. The duplication is performed by a special mixer
+     * thread in the AudioFlinger.
+     */
+    audio_io_handle_t (*open_mult_duplicate_output)(void *service,
+                                                    audio_io_handle_t outputs[],
+                                                    uint32_t num_outputs);
+#endif
+
     /* closes the output stream */
     int (*close_output)(void *service, audio_io_handle_t output);
 
