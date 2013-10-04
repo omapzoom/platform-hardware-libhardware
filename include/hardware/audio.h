@@ -107,6 +107,10 @@ __BEGIN_DECLS
 #define AUDIO_PARAMETER_STREAM_INPUT_SOURCE "input_source"  // audio_source_t
 #define AUDIO_PARAMETER_STREAM_SAMPLING_RATE "sampling_rate" // uint32_t
 
+#ifdef OMAP_MULTIZONE_AUDIO
+#define AUDIO_PARAMETER_CALL_ROUTING "call_routing"         // audio_devices_t
+#endif
+
 /* Query supported formats. The response is a '|' separated list of strings from
  * audio_format_t enum e.g: "sup_formats=AUDIO_FORMAT_PCM_16_BIT" */
 #define AUDIO_PARAMETER_STREAM_SUP_FORMATS "sup_formats"
