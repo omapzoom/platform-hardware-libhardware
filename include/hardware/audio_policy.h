@@ -348,6 +348,31 @@ struct audio_policy_service_ops {
     audio_io_handle_t (*open_mult_duplicate_output)(void *service,
                                                     audio_io_handle_t outputs[],
                                                     uint32_t num_outputs);
+
+    /* set the volume between the duplicating output (source) and the
+     * output receiving the duplicated data (dest). This volume is
+     * set in the OutputTrack associated with the dest output to
+     * have more granularity in the device selection for volume
+     * calculations.
+     */
+    int (*set_duplicating_volume)(void *service,
+                                  audio_io_handle_t src,
+                                  audio_io_handle_t dest,
+                                  float volume);
+
+    /* set the zone volume which is a linear volume attached to the
+     * track whose session id is passed. It's expected to be used
+     * when the global zone volume or the track volume in a zone
+     * changes (e.g. ducking).
+     * For better results with duplicating outputs, the output argument
+     * should correspond to the output associated with the listening
+     * zone whose volume wants to be changed. Passing the duplicating
+     * output handle would affect all outputs connected to it.
+     */
+    int (*set_zone_volume)(void *service,
+                           audio_io_handle_t output,
+                           int sessionId,
+                           float volume);
 #endif
 
     /* closes the output stream */
